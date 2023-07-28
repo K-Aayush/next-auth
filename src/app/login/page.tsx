@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
+
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
@@ -16,6 +17,7 @@ const Login = () => {
   }
 
   return (
+    <>
     <div className='min-h-screen bg-gradient-to-br from-indigo-500 via-pink-500 to-purple-500'>
       <div className='container mx-auto py-40'>
         <div className='flex w-8/12 bg-white rounded-xl mx-auto shadow-lg overflow-hidden relative'>
@@ -72,6 +74,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
