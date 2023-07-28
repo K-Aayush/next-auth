@@ -56,8 +56,8 @@ const SignUp = () => {
             />
             </div>
           </div>
-          <div className='w-full md:w-1/2 lg:w-1/2 py-16 px-12 md:py-8 md:px-5 lg:px-12 lg:py-20'>
-            <h1 className='text-sm font-bold text-gray-900 mb-4 md:text-xl md:font-medium'>
+          <div className='w-full md:w-1/2 lg:w-1/2 py-4 px-4 md:py-8 md:px-5 lg:px-12 lg:py-20'>
+            <h1 className='text-sm font-bold text-gray-900 mb-4 md:text-xl md:font-medium lg:text-3xl lg:font-bold'>
               Create an account
             </h1>
             <hr />
