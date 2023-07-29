@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
-import { POST } from '../api/users/signup/route';
 
 
 const SignUp = () => {
@@ -16,29 +15,86 @@ const SignUp = () => {
     username: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    username: "",
+  })
 
-  const onSignup = async () => {
+  const handleChange = (e:any) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value})
+  }
+
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
     try {
-      const response = await fetch("/api/users/signup", {
-        method: 'POST',
-        body: JSON.stringify(user),
-      })
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error);
+      let isValid = true;
+      const newErrors = {
+        email: "",
+        password: "",
+        username: "",
       }
 
-      console.log(data);
+      if(!user.username){
+        newErrors.username = "Username is required";
+        isValid = false;
+      }
 
-      router.push('/login')
+      if(!user.email){
+        newErrors.email = "Email is required";
+        isValid = false;
+      }
 
+      if(!user.password){
+        newErrors.password = "Password is required";
+        isValid = false;
+      }
+
+      setErrors(newErrors);
+
+      if(isValid){
+        const response = await fetch('/api/users/signup', {
+          method: 'POST',
+          body: JSON.stringify(user),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error);
+        }
+
+        console.log(data);
+
+        router.push('/login');
+      }
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   }
+
+  // const onSignup = async () => {
+  //   try {
+  //     const response = await fetch("/api/users/signup", {
+  //       method: 'POST',
+  //       body: JSON.stringify(user),
+  //     })
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data.error);
+  //     }
+
+  //     console.log(data);
+
+  //     router.push('/login')
+
+  //   } catch (error: any) {
+  //     toast.error(error.message)
+  //   }
+  // }
 
 
 
@@ -61,28 +117,32 @@ const SignUp = () => {
               Create an account
             </h1>
             <hr />
-            <form action="#" className='mt-4'>
-              <div className='flex flex-col gap-4 md:gap-2 lg:gap-4'>
+            <form action="#" className='mt-4' onSubmit={handleSubmit}>
+              <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>
                 <label htmlFor="username" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Username</label>
                 <input
-                  className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5 mb-4'
+                  className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5'
                   id="username"
                   type="text"
+                  name='username'
                   placeholder="Username"
                   value={user.username}
-                  onChange={(e) => setUser({ ...user, username: e.target.value })}
+                  onChange={handleChange}
                 />
+                 <span className='text-red-500 text-sm mb-2'>{errors.username}</span>
               </div>
               <div className='flex flex-col gap-4 md:gap-2 lg:gap-4'>
                 <label htmlFor="email" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Email</label>
                 <input
-                  className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5 mb-4'
+                  className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5'
                   id="email"
                   type="text"
+                  name='email'
                   placeholder="name@gmail.com"
                   value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  onChange={handleChange}
                 />
+                <span className='text-red-500 text-sm mb-2'>{errors.email}</span>
               </div>
               <div className='flex flex-col gap-4 md:gap-2 lg:gap-4'>
                 <label htmlFor="password" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Password</label>
@@ -90,14 +150,16 @@ const SignUp = () => {
                   className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5'
                   id="password"
                   type="password"
+                  name='password'
                   placeholder="Password"
                   value={user.password}
-                  onChange={(e) => setUser({ ...user, password: e.target.value })}
+                  onChange={handleChange}
                 />
+                <span className='text-red-500 text-sm'>{errors.password}</span>
               </div>
               <button
                 className='py-2 px-4 mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg w-fit md:mt-4'
-                onClick={onSignup}
+                type='submit'
               >
                 Sign Up
               </button>
