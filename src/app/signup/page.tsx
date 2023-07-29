@@ -6,10 +6,15 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 
+interface MyFormValues {
+  email: string,
+  password: string,
+  username: string,
+}
 
 const SignUp = () => {
   const router = useRouter();
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<MyFormValues>({
     email: "",
     password: "",
     username: "",
@@ -21,12 +26,12 @@ const SignUp = () => {
     username: "",
   })
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value})
   }
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       let isValid = true;
