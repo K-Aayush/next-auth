@@ -136,7 +136,7 @@ const SignUp = () => {
                 />
                  <span className='text-red-500 text-sm mb-2'>{errors.username}</span>
               </div>
-              <div className='flex flex-col gap-4 md:gap-2 lg:gap-4'>
+              <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>
                 <label htmlFor="email" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Email</label>
                 <input
                   className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5'
@@ -149,7 +149,7 @@ const SignUp = () => {
                 />
                 <span className='text-red-500 text-sm mb-2'>{errors.email}</span>
               </div>
-              <div className='flex flex-col gap-4 md:gap-2 lg:gap-4'>
+              <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>
                 <label htmlFor="password" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Password</label>
                 <input
                   className='bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5'
