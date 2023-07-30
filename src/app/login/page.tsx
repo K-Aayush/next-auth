@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Email is required'),
-  password: Yup.string().required('Password is required').min(6, "Password should be atleast of 6 characters").max(12, "password shouldn`t be more than 12 characters"),
+  password: Yup.string().required('Password is required').min(6, "Password must be atleast of 6 characters").max(12, "password mustn`t be more than 12 characters"),
 });
 
 
@@ -81,7 +81,7 @@ const Login = () => {
                     onChange={handleChange}
                   />
                   {errors.email && touched.email && (
-                    <span className="text-red-500 text-sm mb-2">{errors.email}</span>
+                    <span className="text-red-500 text-sm mb-4">{errors.email}</span>
                   )}
                 </div>
                 <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>

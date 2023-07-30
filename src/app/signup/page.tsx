@@ -44,15 +44,29 @@ const SignUp = () => {
       if(!user.username){
         newErrors.username = "Username is required";
         isValid = false;
+      } else if(user.username.length < 3){
+        newErrors.username = "Username must have atleast 3 characters";
+        isValid = false;
+      } else if(user.username.length > 12){
+        newErrors.username = "Username mustn`t be more than 12 characters"
       }
 
       if(!user.email){
         newErrors.email = "Email is required";
         isValid = false;
+      } else if(!user.email.includes("@")){
+        newErrors.email = "Invalid email address";
+        isValid = false;
       }
 
       if(!user.password){
         newErrors.password = "Password is required";
+        isValid = false;
+      } else if (user.password.length < 6) {
+        newErrors.password = "Password must be at least 6 characters";
+        isValid = false;
+      } else if (user.password.length > 12) {
+        newErrors.password = "Password must not be more than 12 characters";
         isValid = false;
       }
 
