@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email address').required('Email is required'),
+  username: Yup.string().required('username is required').min(3, "username must have at least 3 characters").max(12, "Username must not be more than 12 characters"),
   password: Yup.string().required('Password is required').min(6, "Password must be atleast of 6 characters").max(12, "password mustn`t be more than 12 characters"),
 });
 
@@ -19,30 +19,38 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await fetch('/api/users/login', {
+        console.log(values);
+        const response = await fetch('https://dummyjson.com/auth/login', {
           method: 'POST',
-          body: JSON.stringify(values),
-        });
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            
+            userename: values.username,
+            password: values.password,
+          })
+        })
 
         const data = await response.json();
-
+        
+        console.log(data);
+        
         if (!response.ok) {
           throw new Error(data.error);
         }
 
-        console.log(data);
-
-        router.push('/signup');
+    
       } catch (error: any) {
-        toast.error(error.message);
+          toast.error(error.message);
       }
-    }
+      // router.push('/');
+
+      } 
   })
 
   const { handleSubmit, handleChange, values, errors, touched } = formik;
@@ -71,20 +79,20 @@ const Login = () => {
               <hr />
               <form action="#" className='mt-4' onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>
-                  <label htmlFor="email" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Email</label>
+                  <label htmlFor="username" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Username</label>
                   <input
-                    className={`bg-white border ${errors.email && touched.email ? 'border-red-500' : 'border-gray-300'} text-gray-900 rounded-lg p-2.5`}
-                    id="email"
+                    className={`bg-white border ${errors.username && touched.username ? 'border-red-500' : 'border-gray-300'} text-gray-900 rounded-lg p-2.5`}
+                    id="username"
                     type="text"
-                    placeholder="name@gmail.com"
-                    value={values.email}
+                    placeholder="Enter your Username"
+                    value={values.username}
                     onChange={handleChange}
                   />
-                  {errors.email && touched.email && (
-                    <span className="text-red-500 text-sm mb-4">{errors.email}</span>
+                  {errors.username && touched.username && (
+                    <span className="text-red-500 text-sm mb-4">{errors.username}</span>
                   )}
                 </div>
-                <div className='flex flex-col gap-2 md:gap-2 lg:gap-4'>
+                <div className='flex flex-col gap-2 md:gap-2 lg:gap-4 mt-2'>
                   <label htmlFor="password" className='text-sm font-medium text-gray-900 dark:text-gray-800'>Password</label>
                   <input
                     className={`bg-white border ${errors.password && touched.password ? 'border-red-500' : 'border-gray-300'} text-gray-900 rounded-lg p-2.5`}
