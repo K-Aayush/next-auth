@@ -22,10 +22,11 @@ export async function GET() {
     const { value } = token;
     const secret = process.env.JWT_SCERET || "";
     try {
-        verify(value, secret);
+        const decodedToken = verify(value, secret);
+        const { username }: any = decodedToken;
 
         const response = {
-            user: "super top secret user"
+            user: username
         }
         return new Response(JSON.stringify(response), {
             status: 200,   
