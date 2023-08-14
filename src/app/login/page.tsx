@@ -46,6 +46,7 @@ const Login = () => {
     
       } catch (error: any) {
           toast.error(error.message);
+          router.push('/')
       }
 
       } 

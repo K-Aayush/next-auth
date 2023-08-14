@@ -3,6 +3,10 @@ import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+interface DecodedToken {
+    username: string;
+}
+
 export async function GET() {
     const cookieStore = cookies();
 
@@ -22,8 +26,8 @@ export async function GET() {
     const { value } = token;
     const secret = process.env.JWT_SCERET || "";
     try {
-        const decodedToken = verify(value, secret);
-        const { username }: any = decodedToken;
+        const decodedToken = verify(value, secret) as DecodedToken;
+        const { username } = decodedToken;
 
         const response = {
             user: username
